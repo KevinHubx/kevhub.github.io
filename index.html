@@ -1,19 +1,131 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>KevHub</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>KevHub</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* BODY */
+body {
+  background: #000;
+  color: white;
+  text-align: center;
+  overflow-x: hidden;
+}
+
+/* PARTÍCULAS */
+#particles {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+}
+
+/* HERO */
+.hero {
+  padding: 50px 20px 30px;
+}
+
+.logo {
+  width: 140px;
+  border-radius: 25px;
+  box-shadow: 0 0 25px red;
+  margin-bottom: 20px;
+}
+
+/* TITULOS DORADOS CON BRILLO */
+h1, h2 {
+  color: #FFD700;
+  text-shadow:
+    0 0 6px #FFD700,
+    0 0 14px #FFA500,
+    0 0 30px #FF8C00;
+}
+
+.hero p {
+  color: #ccc;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+/* MENU */
+.menu {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  padding: 15px;
+  font-weight: bold;
+}
+
+.menu a {
+  color: white;
+  text-decoration: none;
+}
+
+.menu a:hover {
+  color: red;
+}
+
+/* CARD */
+.card {
+  background: #0b0b0b;
+  margin: 40px auto;
+  padding: 30px;
+  width: 90%;
+  max-width: 520px;
+  border-radius: 18px;
+  box-shadow: 0 0 25px rgba(255,0,0,0.25);
+}
+
+.card p, li {
+  color: #ddd;
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+
+/* BOTON */
+.btn {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 15px 25px;
+  background: linear-gradient(135deg, red, darkred);
+  color: white;
+  font-weight: bold;
+  border-radius: 30px;
+  text-decoration: none;
+  box-shadow: 0 0 15px red;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+}
+
+/* FOOTER */
+footer {
+  padding: 20px;
+  color: #888;
+  font-size: 13px;
+}
+</style>
 </head>
+
 <body>
 
-<div class="particles"></div>
+<canvas id="particles"></canvas>
 
 <header class="hero" id="inicio">
+  <!-- CAMBIA EL LINK POR TU IMAGEN -->
   <img src="img/logo.png" class="logo">
   <h1>Grupo Oficial de Roblox - KevHub</h1>
-  <p>Proyecto creado en conjunto por Kevin</p>
+  <p>Proyecto creado en conjunto por Kevin (KevHub)</p>
 </header>
 
 <nav class="menu">
@@ -30,16 +142,7 @@
     Este es el sitio web oficial del Grupo de Roblox.
     Aquí encontrarás información, anuncios y futuros proyectos.
   </p>
-  <a class="btn" href="https://www.roblox.com/groups/TUGRUPO">Ver Grupo KevHub en Roblox</a>
-</section>
-
-<section class="card" id="sobre">
-  <h2>Sobre el Grupo</h2>
-  <p>
-    KevHub es un grupo de Roblox enfocado en crear juegos,
-    experiencias y una comunidad activa y divertida.
-  </p>
-  <p>👥 Actualmente somos <b>+50 Miembros</b> 🚀</p>
+  <a class="btn" href="https://www.roblox.com/share/g/597320437">Ver Grupo KevHub en Roblox</a>
 </section>
 
 <section class="card" id="juegos">
@@ -53,23 +156,63 @@
 <section class="card" id="creadores">
   <h2>Creadores y Dueños</h2>
   <p>👑 Kevin</p>
-  <p>
-    Fundadores y responsables de KevHub,
-    guiando a la comunidad en la creación de juegos increíbles 🚀
-  </p>
 </section>
 
 <section class="card" id="contacto">
   <h2>Contacto</h2>
-  <p>Únete a nuestro Discord oficial para anuncios y novedades:</p>
+  <p>Únete a nuestro Discord oficial:</p>
   <a class="btn" href="https://discord.gg/TUINVITE">Entrar al Discord</a>
-</section>
-  <a class="btn" href="https://www.roblox.com/share/g/597320437">Entrar al Grupo De Roblox De KevHub</a>
 </section>
 
 <footer>
   © 2026 - Sitio oficial del Grupo KevHub
 </footer>
+
+<script>
+const canvas = document.getElementById("particles");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particles = [];
+
+for (let i = 0; i < 90; i++) {
+  particles.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    vx: (Math.random() - 0.5) * 0.8,
+    vy: (Math.random() - 0.5) * 0.8,
+    size: Math.random() * 2 + 1
+  });
+}
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  particles.forEach(p => {
+    p.x += p.vx;
+    p.y += p.vy;
+
+    if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+    if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+    ctx.fillStyle = "red";
+    ctx.fill();
+  });
+
+  requestAnimationFrame(animate);
+}
+
+animate();
+
+window.addEventListener("resize", () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
+</script>
 
 </body>
 </html>
